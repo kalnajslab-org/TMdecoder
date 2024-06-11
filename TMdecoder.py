@@ -4,42 +4,79 @@ import xmltodict
 import sys
 
 class TMmsg:
-    '''Base class for Strateole2 TM message decoding
-
-    See the Zephyr TM specification in:
-    ZEPHYR INTERFACES FOR HOSTED INSTRUMENTS
-    STR2-ZEPH-DCI-0-031 Version : 1.3
-    '''
     def __init__(self, data:bytes):
+        '''
+        Base class for Strateole2 TM message decoding
+
+        See the Zephyr TM specification in:
+        ZEPHYR INTERFACES FOR HOSTED INSTRUMENTS
+        STR2-ZEPH-DCI-0-031 Version : 1.3
+
+        Args:
+            data (bytes): The binary data to decode.
+
+        Examples:
+            tm_msg = TMmsg(data)
+            tm_msg.TMxml()
+            tm_msg.CRCxml()
+        '''
         self.data = data
         self.bindata = self.binaryData()
 
-    def TMxml(self)->str:
+    def parse_TM_xml(self)->str:
         xml_txt = self.delimitedText(b'<TM>', b'</TM>')
-        result = xmltodict.parse(xml_txt)
-        return result
+        return xmltodict.parse(xml_txt)
 
-    def CRCxml(self)->str:
+    def parse_CRC_xml(self)->str:
+        '''
+        Parse TM XML data from the binary input.
+
+        Returns:
+            str: Parsed XML data.
+
+        Raises:
+            KeyError: If the start or end text is not found in the input data.
+        '''        
         xml_txt = self.delimitedText(b'<CRC>', b'</CRC>')
-        result = xmltodict.parse(xml_txt)
-        return result
+        return xmltodict.parse(xml_txt)
 
     def delimitedText(self, startTxt:str, endTxt:str)->bytes:
+        '''
+        Extract and decode text delimited by start and end markers from the binary input.
+
+        Args:
+            startTxt (str): The start marker for the delimited text.
+            endTxt (str): The end marker for the delimited text.
+
+        Returns:
+            bytes: Decoded text between the start and end markers.
+
+        Raises:
+            ValueError: If the start or end markers are not found in the input data.
+        '''
         start = self.data.find(startTxt)
         end = self.data.find(endTxt)
         return data[start:end+len(endTxt)].decode()
 
     def binaryData(self)->bytes:
-        '''Return the binary data segment'''
-        tm_xml = self.TMxml()
+        '''
+        Extracts and returns a segment of binary data based on markers and lengths from the input data.
+
+        Returns:
+            bytes: The extracted binary data segment.
+
+        Raises:
+            KeyError: If the 'TM' or 'Length' keys are not found in the parsed XML data.
+        '''
+        tm_xml = self.parse_TM_xml()
         bin_length = int(tm_xml['TM']['Length'])
         bin_start = self.data.find(b'</CRC>\nSTART') + 12
-        bindata = self.data[bin_start:bin_start+bin_length]
-        return bindata
+        return self.data[bin_start:bin_start+bin_length]
 
 class RS41msg(TMmsg):
-    '''LOPC RS41 TM message'''
-    # RS41 binary segment:
+    # The binary payload for the RS41 contains a couple of
+    # metadata fields, followed by multiple data records.
+    # The payload is coded as follows:
     # uint32_t start time
     # uint16_t n_samples
     # data records:
@@ -52,11 +89,28 @@ class RS41msg(TMmsg):
     #    uint16_t error;
     #};
     def __init__(self, data:bytes):
+        '''
+        Initialize the object with the provided binary data.
+
+        Args:
+            data (bytes): The binary data to initialize the object.
+
+        Returns:
+            None
+        '''
         super().__init__(data)
 
     def decodeRS41sample(self, record)->dict:
-        '''Decode one binary sample and convert to real world values'''
-        r = dict()
+        '''
+        Decode a binary sample and convert it to real-world values.
+
+        Args:
+            record: The binary sample to decode.
+
+        Returns:
+            dict: Decoded real-world values of the binary sample.
+        '''
+        r = {}
         r['valid'] = struct.unpack_from('B', record, 0)[0]
         r['frame'] = struct.unpack_from('>l', record, 1)[0]
         r['tdry'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
@@ -67,7 +121,12 @@ class RS41msg(TMmsg):
         return r
 
     def allRS41samples(self)->list:
-        '''Go through all data samples and convert to real world values'''
+        '''
+        Go through all data samples and convert them to real-world values.
+
+        Returns:
+            list: List of dictionaries containing decoded real-world values for each data sample.
+        '''
         record_len = 1 + 4 + 2 + 2 + 2 + 2
         records = []
         for i in range(6, len(self.bindata)-6, record_len):
@@ -76,8 +135,16 @@ class RS41msg(TMmsg):
         return records
 
     def timeStamp(self)->int:
-        time_stamp = struct.unpack_from('>L', self.bindata, 0)[0]
-        return time_stamp
+        '''
+        Extract the timestamp from the binary data.
+
+        Returns:
+            int: The extracted timestamp value.
+
+        Raises:
+            struct.error: If there is an issue with unpacking the timestamp from the binary data.
+        '''
+        return  struct.unpack_from('>L', self.bindata, 0)[0]
 
 if __name__ == "__main__":
     inFile = sys.argv[1]
@@ -86,8 +153,8 @@ if __name__ == "__main__":
 
     rs41_msg = RS41msg(data)
 
-    print(rs41_msg.TMxml())
-    print(rs41_msg.CRCxml())
+    print(rs41_msg.parse_TM_xml())
+    print(rs41_msg.parse_CRC_xml())
 
     time_stamp = rs41_msg.timeStamp()
     print(f"timestamp: {time_stamp}")
