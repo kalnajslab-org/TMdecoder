@@ -4,7 +4,7 @@ import xmltodict
 import sys
 
 class TMmsg:
-    def __init__(self, data:bytes):
+    def __init__(self, data_file:str):
         '''
         Base class for Strateole2 TM message decoding
 
@@ -20,8 +20,12 @@ class TMmsg:
             tm_msg.TMxml()
             tm_msg.CRCxml()
         '''
+        with open(data_file, "rb") as binary_file:
+            data = binary_file.read()
+
         self.data = data
         self.bindata = self.binaryData()
+        self.csvheader = ''
 
     def parse_TM_xml(self)->str:
         xml_txt = self.delimitedText(b'<TM>', b'</TM>')
@@ -40,7 +44,7 @@ class TMmsg:
         xml_txt = self.delimitedText(b'<CRC>', b'</CRC>')
         return xmltodict.parse(xml_txt)
 
-    def delimitedText(self, startTxt:str, endTxt:str)->bytes:
+    def delimitedText(self, startTxt:str, endTxt:str)->str:
         '''
         Extract and decode text delimited by start and end markers from the binary input.
 
@@ -56,7 +60,7 @@ class TMmsg:
         '''
         start = self.data.find(startTxt)
         end = self.data.find(endTxt)
-        return data[start:end+len(endTxt)].decode()
+        return self.data[start:end+len(endTxt)].decode()
 
     def binaryData(self)->bytes:
         '''
@@ -99,6 +103,7 @@ class RS41msg(TMmsg):
             None
         '''
         super().__init__(data)
+        self.csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,pres_mb,module_error'
 
     def decodeRS41sample(self, record)->dict:
         '''
@@ -147,11 +152,8 @@ class RS41msg(TMmsg):
         return  struct.unpack_from('>L', self.bindata, 0)[0]
 
 if __name__ == "__main__":
-    inFile = sys.argv[1]
-    with open(inFile, "rb") as binary_file:
-        data = binary_file.read()
 
-    rs41_msg = RS41msg(data)
+    rs41_msg = RS41msg(sys.argv[1])
 
     print(rs41_msg.parse_TM_xml())
     print(rs41_msg.parse_CRC_xml())
