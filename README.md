@@ -1,6 +1,9 @@
 # TMdecoder
 
-A program to decode and display Strateole2 Telelemetry Messages (TMs).
+A program to decode and display LASP-Strateole2 Telelemetry Messages (TMs).
+The output is in CSV format. A CSV header is included.
+
+*It currently only decodes RS41 TM files. LPC compatibilty is under construction*
 
 There are two sample TMs inlcuded here which can be used to try out the application:
 
