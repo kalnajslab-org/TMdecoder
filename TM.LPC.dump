@@ -1,0 +1,305 @@
+0000000    <   T   M   >  nl  ht   <   M   s   g   >   8   <   /   M   s
+           3c  54  4d  3e  0a  09  3c  4d  73  67  3e  38  3c  2f  4d  73
+0000016    g   >  nl  ht   <   I   n   s   t   >   L   P   C   <   /   I
+           67  3e  0a  09  3c  49  6e  73  74  3e  4c  50  43  3c  2f  49
+0000032    n   s   t   >  nl  ht   <   S   t   a   t   e   F   l   a   g
+           6e  73  74  3e  0a  09  3c  53  74  61  74  65  46  6c  61  67
+0000048    1   >   W   A   R   N   <   /   S   t   a   t   e   F   l   a
+           31  3e  57  41  52  4e  3c  2f  53  74  61  74  65  46  6c  61
+0000064    g   1   >  nl  ht   <   S   t   a   t   e   M   e   s   s   1
+           67  31  3e  0a  09  3c  53  74  61  74  65  4d  65  73  73  31
+0000080    >   -   2   7   3   .   1   5   ,   -   2   7   3   .   1   5
+           3e  2d  32  37  33  2e  31  35  2c  2d  32  37  33  2e  31  35
+0000096    ,   -   2   7   3   .   1   5   <   /   S   t   a   t   e   M
+           2c  2d  32  37  33  2e  31  35  3c  2f  53  74  61  74  65  4d
+0000112    e   s   s   1   >  nl  ht   <   S   t   a   t   e   F   l   a
+           65  73  73  31  3e  0a  09  3c  53  74  61  74  65  46  6c  61
+0000128    g   2   >   F   I   N   E   <   /   S   t   a   t   e   F   l
+           67  32  3e  46  49  4e  45  3c  2f  53  74  61  74  65  46  6c
+0000144    a   g   2   >  nl  ht   <   S   t   a   t   e   M   e   s   s
+           61  67  32  3e  0a  09  3c  53  74  61  74  65  4d  65  73  73
+0000160    2   >   1   5   .   3   2   ,   3   .   3   0   <   /   S   t
+           32  3e  31  35  2e  33  32  2c  33  2e  33  30  3c  2f  53  74
+0000176    a   t   e   M   e   s   s   2   >  nl  ht   <   L   e   n   g
+           61  74  65  4d  65  73  73  32  3e  0a  09  3c  4c  65  6e  67
+0000192    t   h   >   2   9   1   6   <   /   L   e   n   g   t   h   >
+           74  68  3e  32  39  31  36  3c  2f  4c  65  6e  67  74  68  3e
+0000208   nl   <   /   T   M   >  nl   <   C   R   C   >   5   2   3   4
+           0a  3c  2f  54  4d  3e  0a  3c  43  52  43  3e  35  32  33  34
+0000224    6   <   /   C   R   C   >  nl   S   T   A   R   T   f   f   ¦
+           36  3c  2f  43  52  43  3e  0a  53  54  41  52  54  66  66  a6
+0000240  dc3 nul nul eot   Î eot  rs nul nul soh   à   .   %  ff   M  ff
+           13  00  00  04  ce  04  1e  00  00  01  e0  2e  25  0c  4d  0c
+0000256    }   <   T   5   Õ nul nul nul nul nul nul nul nul nul nul nul
+           7d  3c  54  35  d5  00  00  00  00  00  00  00  00  00  00  00
+0000272  nul   }  85 nul ack nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  85  00  06  00  00  00  00  00  00  00  00  00  00  00
+0000288  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0000368  nul   }  91 nul bel nul stx nul nul nul nul nul nul nul soh nul
+           00  7d  91  00  07  00  02  00  00  00  00  00  00  00  01  00
+0000384  nul nul nul nul nul nul soh nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  01  00  00  00  00  00  00  00  00  00
+*
+0000416  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+0000432  nul nul nul eot  94 etx   ¸ nul nul soh   á   -   ô  ff   ²  ff
+           00  00  00  04  94  03  b8  00  00  01  e1  2d  f4  0c  b2  0c
+0000448    ã   ;   N  96  93 nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  4e  96  93  00  00  00  00  00  00  00  00  00  00  00
+0000464  nul   }  86 nul etx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  86  00  03  00  00  00  00  00  00  00  00  00  00  00
+0000480  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0000528  nul nul nul soh  84 soh   P nul nul soh   á   -   ë  ff   ²  ff
+           00  00  00  01  84  01  50  00  00  01  e1  2d  eb  0c  b2  0c
+0000544    á   ;   Ö   j   é nul nul nul nul nul nul nul nul nul nul nul
+           e1  3b  d6  6a  e9  00  00  00  00  00  00  00  00  00  00  00
+0000560  nul   }  82 nul stx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  82  00  02  00  00  00  00  00  00  00  00  00  00  00
+0000576  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0000624  nul nul nul soh   _ soh   B nul nul soh   á   -   ï  ff   ²  ff
+           00  00  00  01  5f  01  42  00  00  01  e1  2d  ef  0c  b2  0c
+0000640    ã   ;   Ü   i   å nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  dc  69  e5  00  00  00  00  00  00  00  00  00  00  00
+0000656  nul   }  86 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  86  00  00  00  00  00  00  00  00  00  00  00  00  00
+0000672  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0000720  nul nul nul soh   u soh   3 nul nul soh   â   -   ë  ff   ®  ff
+           00  00  00  01  75  01  33  00  00  01  e2  2d  eb  0c  ae  0c
+0000736    ã   ;   Ñ   h  nl nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  d1  68  0a  00  00  00  00  00  00  00  00  00  00  00
+0000752  nul   }  85 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  85  00  00  00  00  00  00  00  00  00  00  00  00  00
+0000768  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0000816  nul nul nul soh   u soh   3 nul nul soh   â   -   ë  ff   ²  ff
+           00  00  00  01  75  01  33  00  00  01  e2  2d  eb  0c  b2  0c
+0000832    ã   ;   á   h   Å nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  e1  68  c5  00  00  00  00  00  00  00  00  00  00  00
+0000848  nul   }  83 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  83  00  00  00  00  00  00  00  00  00  00  00  00  00
+0000864  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0000912  nul nul nul soh  84 soh   B nul nul soh   â   -   æ  ff   ¯  ff
+           00  00  00  01  84  01  42  00  00  01  e2  2d  e6  0c  af  0c
+0000928    æ   ;   æ   g   Å nul nul nul nul nul nul nul nul nul nul nul
+           e6  3b  e6  67  c5  00  00  00  00  00  00  00  00  00  00  00
+0000944  nul   }  84 nul soh nul soh nul nul nul nul nul nul nul nul nul
+           00  7d  84  00  01  00  01  00  00  00  00  00  00  00  00  00
+0000960  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001008  nul nul nul soh   | soh   B nul nul soh   á   -   æ  ff   ±  ff
+           00  00  00  01  7c  01  42  00  00  01  e1  2d  e6  0c  b1  0c
+0001024    ã   ;   Ö   h   " nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  d6  68  22  00  00  00  00  00  00  00  00  00  00  00
+0001040  nul   }  82 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  82  00  00  00  00  00  00  00  00  00  00  00  00  00
+0001056  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001104  nul nul nul soh  84 soh   3 nul nul soh   â   -   æ  ff   ±  ff
+           00  00  00  01  84  01  33  00  00  01  e2  2d  e6  0c  b1  0c
+0001120    ã   ;   æ   i   . nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  e6  69  2e  00  00  00  00  00  00  00  00  00  00  00
+0001136  nul   } del nul enq nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  7f  00  05  00  00  00  00  00  00  00  00  00  00  00
+0001152  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001200  nul nul nul soh  84 soh   B nul nul soh   á   -   æ  ff   ±  ff
+           00  00  00  01  84  01  42  00  00  01  e1  2d  e6  0c  b1  0c
+0001216    ã   ;   æ   h   o nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  e6  68  6f  00  00  00  00  00  00  00  00  00  00  00
+0001232  nul   }  86 nul nul nul etx nul nul nul nul nul nul nul nul nul
+           00  7d  86  00  00  00  03  00  00  00  00  00  00  00  00  00
+0001248  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001296  nul nul nul soh   | soh   B nul nul soh   á   -   æ  ff   ´  ff
+           00  00  00  01  7c  01  42  00  00  01  e1  2d  e6  0c  b4  0c
+0001312    ã   ;   Ö   h   ù nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  d6  68  f9  00  00  00  00  00  00  00  00  00  00  00
+0001328  nul   }  87 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  87  00  00  00  00  00  00  00  00  00  00  00  00  00
+0001344  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001392  nul nul nul soh  8b soh   B nul nul soh   á   -   æ  ff   ²  ff
+           00  00  00  01  8b  01  42  00  00  01  e1  2d  e6  0c  b2  0c
+0001408    ä   ;   Ü   h dc2 nul nul nul nul nul nul nul nul nul nul nul
+           e4  3b  dc  68  12  00  00  00  00  00  00  00  00  00  00  00
+0001424  nul   }  83 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  83  00  00  00  00  00  00  00  00  00  00  00  00  00
+0001440  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001488  nul nul nul soh   | soh   ; nul nul soh   á   -   æ  ff   ¯  ff
+           00  00  00  01  7c  01  3b  00  00  01  e1  2d  e6  0c  af  0c
+0001504    ß   ;   Ñ   h   é nul nul nul nul nul nul nul nul nul nul nul
+           df  3b  d1  68  e9  00  00  00  00  00  00  00  00  00  00  00
+0001520  nul   }  84 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  84  00  00  00  00  00  00  00  00  00  00  00  00  00
+0001536  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001584  nul nul nul soh  84 soh   I nul nul soh   á   -   æ  ff   ¯  ff
+           00  00  00  01  84  01  49  00  00  01  e1  2d  e6  0c  af  0c
+0001600    ã   ;   Ü   h   ´ nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  dc  68  b4  00  00  00  00  00  00  00  00  00  00  00
+0001616  nul   }  82 nul etx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  82  00  03  00  00  00  00  00  00  00  00  00  00  00
+0001632  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001680  nul nul nul soh  8b soh   ; nul nul soh   á   -   æ  ff   ²  ff
+           00  00  00  01  8b  01  3b  00  00  01  e1  2d  e6  0c  b2  0c
+0001696    á   ;   Ü   h  nl nul nul nul nul nul nul nul nul nul nul nul
+           e1  3b  dc  68  0a  00  00  00  00  00  00  00  00  00  00  00
+0001712  nul   }  85 nul stx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  85  00  02  00  00  00  00  00  00  00  00  00  00  00
+0001728  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001776  nul nul nul soh  84 soh   B nul nul soh   â   -   æ  ff   ¯  ff
+           00  00  00  01  84  01  42  00  00  01  e2  2d  e6  0c  af  0c
+0001792    ã   ;   á   h   W nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  e1  68  57  00  00  00  00  00  00  00  00  00  00  00
+0001808  nul   }  86 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  86  00  00  00  00  00  00  00  00  00  00  00  00  00
+0001824  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001872  nul nul nul soh  8b soh   B nul nul soh   á   -   æ  ff   ±  ff
+           00  00  00  01  8b  01  42  00  00  01  e1  2d  e6  0c  b1  0c
+0001888    ã   ;   Ñ   h  88 nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  d1  68  88  00  00  00  00  00  00  00  00  00  00  00
+0001904  nul   }  81 nul nul nul stx nul nul nul nul nul nul nul nul nul
+           00  7d  81  00  00  00  02  00  00  00  00  00  00  00  00  00
+0001920  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0001968  nul nul nul soh   | soh   ; nul nul soh   á   -   á  ff   ±  ff
+           00  00  00  01  7c  01  3b  00  00  01  e1  2d  e1  0c  b1  0c
+0001984    á   ;   Ü   i   O nul nul nul nul nul nul nul nul nul nul nul
+           e1  3b  dc  69  4f  00  00  00  00  00  00  00  00  00  00  00
+0002000  nul   }  82 nul soh nul stx nul nul nul nul nul nul nul nul nul
+           00  7d  82  00  01  00  02  00  00  00  00  00  00  00  00  00
+0002016  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002064  nul nul nul soh  84 soh   ; nul nul soh   á   -   Ü  ff   ²  ff
+           00  00  00  01  84  01  3b  00  00  01  e1  2d  dc  0c  b2  0c
+0002080    ã   ;   á   i   k nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  e1  69  6b  00  00  00  00  00  00  00  00  00  00  00
+0002096  nul   }  86 nul eot nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  86  00  04  00  00  00  00  00  00  00  00  00  00  00
+0002112  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002160  nul nul nul soh  84 soh   ; nul nul soh   á   -   á  ff   ±  ff
+           00  00  00  01  84  01  3b  00  00  01  e1  2d  e1  0c  b1  0c
+0002176    á   ;   Ö   g   © nul nul nul nul nul nul nul nul nul nul nul
+           e1  3b  d6  67  a9  00  00  00  00  00  00  00  00  00  00  00
+0002192  nul   }  82 nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  82  00  00  00  00  00  00  00  00  00  00  00  00  00
+0002208  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002256  nul nul soh soh  84 soh   B nul nul soh   á   -   æ  ff   ±  ff
+           00  00  01  01  84  01  42  00  00  01  e1  2d  e6  0c  b1  0c
+0002272    ä   ;   á   h   * nul nul nul nul nul nul nul nul nul nul nul
+           e4  3b  e1  68  2a  00  00  00  00  00  00  00  00  00  00  00
+0002288  nul   }  82 nul etx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  82  00  03  00  00  00  00  00  00  00  00  00  00  00
+0002304  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002352  nul nul nul soh   | soh   B nul nul soh   á   -   á  ff   ¯  ff
+           00  00  00  01  7c  01  42  00  00  01  e1  2d  e1  0c  af  0c
+0002368    ã   ;   Ü   h  88 nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  dc  68  88  00  00  00  00  00  00  00  00  00  00  00
+0002384  nul   }  87 nul eot nul nul nul nul nul soh nul nul nul nul nul
+           00  7d  87  00  04  00  00  00  00  00  01  00  00  00  00  00
+0002400  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002448  nul nul nul soh  84 soh   X nul nul soh   á   -   æ  ff   ±  ff
+           00  00  00  01  84  01  58  00  00  01  e1  2d  e6  0c  b1  0c
+0002464    ß   ;   Ñ   h   Å nul nul nul nul nul nul nul nul nul nul nul
+           df  3b  d1  68  c5  00  00  00  00  00  00  00  00  00  00  00
+0002480  nul   }  81 nul nul nul nul nul nul nul etx nul nul nul nul nul
+           00  7d  81  00  00  00  00  00  00  00  03  00  00  00  00  00
+0002496  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002544  nul nul nul soh  84 soh   B nul nul soh   á   -   æ  ff   ¯  ff
+           00  00  00  01  84  01  42  00  00  01  e1  2d  e6  0c  af  0c
+0002560    ã   ;   Ö   h dc2 nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  d6  68  12  00  00  00  00  00  00  00  00  00  00  00
+0002576  nul   }  81 nul ack nul nul nul nul nul soh nul nul nul nul nul
+           00  7d  81  00  06  00  00  00  00  00  01  00  00  00  00  00
+0002592  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002640  nul nul nul soh   | soh   B nul nul soh   à   -   Ü  ff   ±  ff
+           00  00  00  01  7c  01  42  00  00  01  e0  2d  dc  0c  b1  0c
+0002656    ä   ;   á   h  80 nul nul nul nul nul nul nul nul nul nul nul
+           e4  3b  e1  68  80  00  00  00  00  00  00  00  00  00  00  00
+0002672  nul   }  80 nul eot nul stx nul nul nul nul nul nul nul nul nul
+           00  7d  80  00  04  00  02  00  00  00  00  00  00  00  00  00
+0002688  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002736  nul nul nul soh   u soh   I nul nul soh   á   -   á  ff   ±  ff
+           00  00  00  01  75  01  49  00  00  01  e1  2d  e1  0c  b1  0c
+0002752    ã   ;   á   h   ù nul nul nul nul nul nul nul nul nul nul nul
+           e3  3b  e1  68  f9  00  00  00  00  00  00  00  00  00  00  00
+0002768  nul   }  85 nul soh nul stx nul nul nul nul nul nul nul nul nul
+           00  7d  85  00  01  00  02  00  00  00  00  00  00  00  00  00
+0002784  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002832  nul nul nul soh   n soh   B nul nul soh   á   -   á  ff   ²  ff
+           00  00  00  01  6e  01  42  00  00  01  e1  2d  e1  0c  b2  0c
+0002848    ä   ;   Ö   i   ° nul nul nul nul nul nul nul nul nul nul nul
+           e4  3b  d6  69  b0  00  00  00  00  00  00  00  00  00  00  00
+0002864  nul   }  84 nul etx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  84  00  03  00  00  00  00  00  00  00  00  00  00  00
+0002880  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0002928  nul nul nul soh   | soh   P nul nul soh   á   -   á  ff   ²  ff
+           00  00  00  01  7c  01  50  00  00  01  e1  2d  e1  0c  b2  0c
+0002944    á   ;   Ö   i   & nul nul nul nul nul nul nul nul nul nul nul
+           e1  3b  d6  69  26  00  00  00  00  00  00  00  00  00  00  00
+0002960  nul   } del nul enq nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  7f  00  05  00  00  00  00  00  00  00  00  00  00  00
+0002976  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0003024  nul nul nul soh  8b soh   I nul nul soh   á   -   Ü  ff   ±  ff
+           00  00  00  01  8b  01  49  00  00  01  e1  2d  dc  0c  b1  0c
+0003040    æ   ;   Ñ   h   ´ nul nul nul nul nul nul nul nul nul nul nul
+           e6  3b  d1  68  b4  00  00  00  00  00  00  00  00  00  00  00
+0003056  nul   }  85 nul etx nul nul nul nul nul nul nul nul nul nul nul
+           00  7d  85  00  03  00  00  00  00  00  00  00  00  00  00  00
+0003072  nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul nul
+           00  00  00  00  00  00  00  00  00  00  00  00  00  00  00  00
+*
+0003120  nul nul nul soh   n soh   X nul nul soh   á   -   æ  ff   ´  ff
+           00  00  00  01  6e  01  58  00  00  01  e1  2d  e6  0c  b4  0c
+0003136    ä   ;   Ñ   i   É nul nul nul nul nul nul nul nul nul nul nul
+           e4  3b  d1  69  c9  00  00  00  00  00  00  00  00  00  00  00
+0003152  nul esc dc4   E   N   D                                        
+           00  1b  14  45  4e  44                                        
+0003158
