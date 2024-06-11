@@ -4,6 +4,12 @@ import xmltodict
 import sys
 
 class TMmsg:
+    '''Base class for Strateole2 TM message decoding
+
+    See the Zephyr TM specification in:
+    ZEPHYR INTERFACES FOR HOSTED INSTRUMENTS
+    STR2-ZEPH-DCI-0-031 Version : 1.3
+    '''
     def __init__(self, data:bytes):
         self.data = data
         self.bindata = self.binaryData()
@@ -32,6 +38,7 @@ class TMmsg:
         return bindata
 
 class RS41msg(TMmsg):
+    '''LOPC RS41 TM message'''
     # RS41 binary segment:
     # uint32_t start time
     # uint16_t n_samples
@@ -86,7 +93,7 @@ if __name__ == "__main__":
     print(f"timestamp: {time_stamp}")
 
     records = rs41_msg.allRS41samples()
-
     print(f"{len(records)} data records in the file")
+
     for r in records:
         print(r)
