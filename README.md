@@ -1,12 +1,13 @@
 # TMdecoder
 
-A program to decode and display LASP-Strateole2 Telelemetry Messages (TMs).
+A program to decode and display LASP-Strateole2 Telemetry Messages (TMs).
 The output is printed in CSV format. A CSV header is included. An option
 for saving to a CSV file is provided.
 
-*It currently only decodes RS41 TM files. LPC compatibilty is under construction*
+You must specify on the command line which type of file is
+being processed, either LPC or RS41.
 
-There are two sample TMs inlcuded here which can be used to try out the application:
+There are two sample TMs included here which can be used to try out the application:
 
 - `TM.RS41.ready_tm`: An RS41 telemetry message
 - `TM.LPC.ready_tm`: An LPC telemetry message.
@@ -28,7 +29,8 @@ git clone https://github.com/MisterMartin/TMdecoder.git
 ## Test
 ```sh
 cd TMdecoder
-python3 TMdecoder.py -o csv.txt TM.RS41.ready_tm
+python3 TMdecoder.py -r -o rs41.csv TM.RS41.ready_tm
+python3 TMdecoder.py -l -o lpc.csv TM.LPC.ready_tm
 ```
 
 ## Usage
@@ -36,7 +38,7 @@ python3 TMdecoder.py -o csv.txt TM.RS41.ready_tm
 ```python3 TMdecoder.h -h``` displays help:
 
 ```text
-usage: TMdecoder [-h] [-o OUTFILE] [-q] filename
+usage: TMdecoder [-h] [-l] [-r] [-o OUTFILE] [-q] filename
 
 Decode a LASP StratoCore TM message and produce CSV
 
@@ -45,7 +47,11 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  -l, --lpc             LPC file
+  -r, --rs41            RS41 file
   -o OUTFILE, --outfile OUTFILE
                         Save CSV to a file
   -q, --quiet           Turn off printing
+
+Either -l or -r must be specified
 ```
