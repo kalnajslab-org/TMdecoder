@@ -1,0 +1,6 @@
+Instrument:,LPC,Measurerment End Time: ,"06/10/2024, 07:06:59",LASP Optical Particle Counter on Strateole 2 Super Pressure Balloons
+GPS Position at start of Measurement ,Latitude: ,-273.15,Longitude: ,-273.15,Altitude [m]:,-273.15
+Time,Pump1_I,Pump2_I,PHA_I,PHA_12V,PHA_3V3,Input_V,Flow,CPU_V,Pump1_PWM,Pump2_PWM,Pump1_T,Pump2_T,Laser_T,PCB_T,Inlet_T,275,300,325,350,375,400,450,500,550,600,650,700,750,800,900,1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,6000,8000,10000,13000,16000,24000,24000
+[Unix Time],[mA],[mA],[mA],[V],[V],[V],[SLPM],[V],[#],[#],[C],[C],[C],[C],[C],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm],[diam >nm]
+1718003219,366,344,0,0.481,11.75,3.252,3.3,15.313,27081,0,-273.15,-273.15,-273.15,-273.15,-273.15,32133,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
