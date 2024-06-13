@@ -17,7 +17,10 @@ the files created by their ground system.
 
 The `.dump` files are the text output from a binary dump made
 with the `od` program. They are useful for diagnosing the internal
-format of the TM messages.
+format of the TM messages. They were created with the Linux `od` command:
+```sh
+od -a -t x1 -A d  TM.LPC.ready_tm > TM.LPC.dump
+```
 
 # Installation
 
