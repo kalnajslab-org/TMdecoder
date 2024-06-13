@@ -343,7 +343,7 @@ def argParse():
     parser.add_argument('filename', help='TM message file')
     parser.add_argument('-l', '--lpc', action='store_true', help='LPC file')
     parser.add_argument('-r', '--rs41', action='store_true', help='RS41 file')           
-    parser.add_argument('-o', '--outfile', help='Save CSV to a file')
+    parser.add_argument('-c', '--csv', help='Save CSV to a file')
     parser.add_argument('-q', '--quiet',  action='store_true', help='Turn off printing')  # on/off flag
 
     args=parser.parse_args()
@@ -364,6 +364,6 @@ if __name__ == "__main__":
     if not args.quiet:
         msg.printCsv()
 
-    if args.outfile:
-        msg.saveCsv(args.outfile)
+    if args.csv:
+        msg.saveCsv(args.csv)
 
