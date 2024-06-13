@@ -226,9 +226,12 @@ class LPCmsg(TMmsg):
         date_time = datetime.fromtimestamp(int(self.start_time),tz=timezone.utc)
         self.end_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
 
-        self.instrument_sn = 'Unknown'
-
         tm_xml = self.parse_TM_xml()
+
+        self.instrument = 'Unknown'
+        if 'Inst' in tm_xml['TM']:
+            self.inst = tm_xml['TM']['Inst']
+
         if 'StateMess1' in tm_xml['TM']:
             tokens = tm_xml['TM']['StateMess1'].split(',')
             if len(tokens) == 3:
@@ -286,7 +289,7 @@ class LPCmsg(TMmsg):
 
         csv_writer = csv.writer(self.csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         
-        header1 = ['Instrument: ', self.instrument_sn, 'Measurerment End Time: ', self.end_time, 
+        header1 = ['Instrument:', self.inst, 'Measurerment End Time: ', self.end_time, 
                    'LASP Optical Particle Counter on Strateole 2 Super Pressure Balloons']
         csv_writer.writerow(header1)
 
