@@ -9,7 +9,7 @@ from datetime import timezone
 
 
 class TMmsg:
-    def __init__(self, msg_file_name:str):
+    def __init__(self, msg_filename:str):
         '''
         Base class for Strateole2 TM message decoding
 
@@ -25,7 +25,7 @@ class TMmsg:
             tm_msg.TMxml()
             tm_msg.CRCxml()
         '''
-        with open(msg_file_name, "rb") as binary_file:
+        with open(msg_filename, "rb") as binary_file:
             data = binary_file.read()
 
         self.data = data
@@ -99,17 +99,17 @@ class RS41msg(TMmsg):
     #    uint16_t pres; (pres*100)
     #    uint16_t error;
     #};
-    def __init__(self, msg_file_name:str):
+    def __init__(self, msg_filename:str):
         '''
         Initialize the object with the provided binary data.
 
         Args:
-            msg_file_name: The message file name.
+            msg_filename: The message file name.
 
         Returns:
             None
         '''
-        super().__init__(msg_file_name)
+        super().__init__(msg_filename)
         self.records = self.allRS41samples()
 
     def csvText(self)->list:
@@ -200,17 +200,17 @@ class RS41msg(TMmsg):
         return  struct.unpack_from('>L', self.bindata, 0)[0]
 
 class LPCmsg(TMmsg):
-    def __init__(self, msg_file_name:str):
+    def __init__(self, msg_filename:str):
         '''
         Initialize the object with the provided binary data.
 
         Args:
-            msg_file_name: The message file name.
+            msg_filename: The message file name.
 
         Returns:
             None
         '''
-        super().__init__(msg_file_name)
+        super().__init__(msg_filename)
 
         #LPC bins - each number is the left end of the bins in nm.   The first bin has minimal sensitivity
         diams = [275,300,325,350,375,400,450,500,550,600,650,700,750,800,900,1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,6000,8000,10000,13000,16000,24000,24000]
@@ -339,7 +339,7 @@ def argParse():
     parser = argparse.ArgumentParser(
                         prog='TMdecoder',
                         description='Decode a LASP StratoCore TM message and produce CSV',
-                        epilog='Either -l or -r must be specified')
+                        epilog='If -l or -r are not specified, try to automatically determine the msg type')
     parser.add_argument('filename', help='TM message file')
     parser.add_argument('-l', '--lpc', action='store_true', help='LPC file')
     parser.add_argument('-r', '--rs41', action='store_true', help='RS41 file')           
@@ -348,18 +348,41 @@ def argParse():
 
     args=parser.parse_args()
 
-    if args.lpc == args.rs41:
-        print('Either -l or -r must be specified')
+    if args.lpc & args.rs41:
+        print('Only one of -l or -r can be specified')
         parser.print_usage()
         sys.exit(1)
 
+    args.msg_type = None
+    if args.lpc:
+        args.msg_type = 'lpc'
+    if args.rs41:
+        args.msg_type = 'rs41'
+
     return args
+
+def determine_msg_type(filename:str)->str:
+    msg_type = 'lpc'
+
+    msg = TMmsg(filename)
+    tm = msg.parse_TM_xml()
+    if 'StateMess2' in tm['TM']:
+        if tm['TM']['StateMess2'] == 'RS41':
+            msg_type = 'rs41'
+
+    return msg_type
 
 if __name__ == "__main__":
 
     args = argParse()
 
-    msg = LPCmsg(args.filename) if args.lpc else RS41msg(args.filename)
+    if not args.msg_type:
+        args.msg_type = determine_msg_type(args.filename)
+
+    if args.msg_type == 'lpc':
+        msg = LPCmsg(args.filename)
+    if args.msg_type == 'rs41':
+        msg = RS41msg(args.filename)
 
     if not args.quiet:
         msg.printCsv()
