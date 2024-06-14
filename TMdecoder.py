@@ -30,6 +30,13 @@ class TMmsg:
 
         self.data = data
         self.bindata = self.binaryData()
+        
+        self.time_from_epoch = self.timeStamp()
+        date_time = datetime.fromtimestamp(int(self.time_from_epoch),tz=timezone.utc)
+        self.formatted_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
+
+        self.csv_io = io.StringIO()
+        self.csv_writer = csv.writer(self.csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
     def parse_TM_xml(self)->str:
         xml_txt = self.delimitedText(b'<TM>', b'</TM>')
@@ -131,15 +138,16 @@ class RS41msg(TMmsg):
         Args:
             self: The instance containing records and a CSV header.
         '''
-        self.csv_io = io.StringIO()
-        csv_writer = csv.writer(self.csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        csv_header = ['Instrument:', 'RS41', 'Measurement End Time:', self.formatted_time, 
+                   'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
+        self.csv_writer.writerow(csv_header)
         
         csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,pres_mb,module_error'.split(',')
-        csv_writer.writerow(csv_header)
+        self.csv_writer.writerow(csv_header)
 
         for r in self.records:
             csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'], r['pres_mb'], r['module_error']]
-            csv_writer.writerow(csv_line)
+            self.csv_writer.writerow(csv_line)
         return self.csv_io.getvalue().split('\r\n')
 
     def printCsv(self):
@@ -219,10 +227,6 @@ class LPCmsg(TMmsg):
         self.lon= ''
         self.alt = ''
 
-        self.start_time = self.timeStamp()
-        date_time = datetime.fromtimestamp(int(self.start_time),tz=timezone.utc)
-        self.end_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
-
         tm_xml = self.parse_TM_xml()
 
         self.instrument = 'Unknown'
@@ -250,7 +254,7 @@ class LPCmsg(TMmsg):
                 self.LGBins.append(struct.unpack_from('>H',self.bindata,indx + x*2 + 32)[0])
                 self.HKRaw.append(struct.unpack_from('>H',self.bindata,indx + x*2 + 64)[0])
 
-            self.HKData[0] = self.HKRaw[0] + self.start_time #elapsed time since the start of the measurement in seconds
+            self.HKData[0] = self.HKRaw[0] + self.time_from_epoch #elapsed time since the start of the measurement in seconds
             self.HKData[1] = self.HKRaw[1]  # Pump1 Current in mA
             self.HKData[2] = self.HKRaw[2]  # Pump2 Current in mA
             self.HKData[3] = self.HKRaw[3]  # Detector Current in mA
@@ -278,15 +282,13 @@ class LPCmsg(TMmsg):
             self: The instance containing records and a CSV header.
         '''
 
-        self.csv_io = io.StringIO()
-
         #LPC bins - each number is the left end of the bins in nm.   The first bin has minimal sensitivity
         diams = [275,300,325,350,375,400,450,500,550,600,650,700,750,800,900,1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,6000,8000,10000,13000,16000,24000,24000]
         bin_header = list(map(str,diams))
 
         csv_writer = csv.writer(self.csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         
-        header1 = ['Instrument:', self.inst, 'Measurerment End Time: ', self.end_time, 
+        header1 = ['Instrument:', self.inst, 'Measurement End Time:', self.formatted_time, 
                    'LASP Optical Particle Counter on Strateole 2 Super Pressure Balloons']
         csv_writer.writerow(header1)
 
@@ -315,7 +317,6 @@ class LPCmsg(TMmsg):
         Returns:
             None
         '''
-
         for r in self.csvText():
             print(r)
     
