@@ -30,10 +30,7 @@ class TMmsg:
 
         self.data = data
         self.bindata = self.binaryData()
-        # All of the decoded data samples. Each record
-        # is a dictionary.
-        self.records = []
-        
+
     def parse_TM_xml(self)->str:
         xml_txt = self.delimitedText(b'<TM>', b'</TM>')
         return xmltodict.parse(xml_txt)
@@ -83,6 +80,18 @@ class TMmsg:
         bin_length = int(tm_xml['TM']['Length'])
         bin_start = self.data.find(b'</CRC>\nSTART') + 12
         return self.data[bin_start:bin_start+bin_length]
+
+    def timeStamp(self)->int:
+        '''
+        Extract the timestamp from the binary data.
+
+        Returns:
+            int: The extracted timestamp value.
+
+        Raises:
+            struct.error: If there is an issue with unpacking the timestamp from the binary data.
+        '''
+        return  struct.unpack_from('>L', self.bindata, 0)[0]
 
 class RS41msg(TMmsg):
     # The binary payload for the RS41 contains a couple of
@@ -187,18 +196,6 @@ class RS41msg(TMmsg):
             records.append(self.decodeRS41sample(record))
         return records
 
-    def timeStamp(self)->int:
-        '''
-        Extract the timestamp from the binary data.
-
-        Returns:
-            int: The extracted timestamp value.
-
-        Raises:
-            struct.error: If there is an issue with unpacking the timestamp from the binary data.
-        '''
-        return  struct.unpack_from('>L', self.bindata, 0)[0]
-
 class LPCmsg(TMmsg):
     def __init__(self, msg_filename:str):
         '''
@@ -222,7 +219,7 @@ class LPCmsg(TMmsg):
         self.lon= ''
         self.alt = ''
 
-        self.start_time = struct.unpack_from('>I',self.bindata,0)[0] #get the first number which is the start time
+        self.start_time = self.timeStamp()
         date_time = datetime.fromtimestamp(int(self.start_time),tz=timezone.utc)
         self.end_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
 
