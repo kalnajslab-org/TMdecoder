@@ -185,7 +185,7 @@ class RS41msg(TMmsg):
         r['frame_count'] = struct.unpack_from('>l', record, 1)[0]
         r['air_temp_degC'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
         r['humdity_percent'] = struct.unpack_from('>H', record, 7)[0]/100.0
-        r['pres_mb'] = struct.unpack_from('>H', record, 9)[0]/100.0
+        r['pres_mb'] = struct.unpack_from('>H', record, 9)[0]/50.0
         r['module_error'] = struct.unpack_from('>H', record, 11)[0]
         #print(f"{valid}, {frame}, {tdry:0.2f}, {humidity:0.2f}, {pres:0.2f}, 0x{error:04x}")
         return r
