@@ -35,9 +35,11 @@ class TMmsg:
         date_time = datetime.fromtimestamp(int(self.time_from_epoch),tz=timezone.utc)
         self.formatted_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
 
-        self.csv_io = io.StringIO()
-        self.csv_writer = csv.writer(self.csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
+    def tm(self):
+        '''Return the TM'''
+        return self.delimitedText(b'<TM>', b'</TM>')
+    
     def parse_TM_xml(self)->str:
         xml_txt = self.delimitedText(b'<TM>', b'</TM>')
         return xmltodict.parse(xml_txt)
@@ -138,17 +140,22 @@ class RS41msg(TMmsg):
         Args:
             self: The instance containing records and a CSV header.
         '''
+
+        csv_io = io.StringIO()
+        csv_writer = csv.writer(csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
         csv_header = ['Instrument:', 'RS41', 'Measurement End Time:', self.formatted_time, 
                    'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
-        self.csv_writer.writerow(csv_header)
+        csv_writer.writerow(csv_header)
         
         csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,pres_mb,module_error'.split(',')
-        self.csv_writer.writerow(csv_header)
+        csv_writer.writerow(csv_header)
 
         for r in self.records:
             csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'], r['pres_mb'], r['module_error']]
-            self.csv_writer.writerow(csv_line)
-        return self.csv_io.getvalue().split('\r\n')
+            csv_writer.writerow(csv_line)
+
+        return csv_io.getvalue().split('\r\n')
 
     def printCsv(self):
         '''
@@ -282,11 +289,14 @@ class LPCmsg(TMmsg):
             self: The instance containing records and a CSV header.
         '''
 
+        csv_io = io.StringIO()
+        csv_writer = csv.writer(csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
         #LPC bins - each number is the left end of the bins in nm.   The first bin has minimal sensitivity
         diams = [275,300,325,350,375,400,450,500,550,600,650,700,750,800,900,1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,6000,8000,10000,13000,16000,24000,24000]
         bin_header = list(map(str,diams))
 
-        csv_writer = csv.writer(self.csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        csv_writer = csv.writer(csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         
         header1 = ['Instrument:', self.inst, 'Measurement End Time:', self.formatted_time, 
                    'LASP Optical Particle Counter on Strateole 2 Super Pressure Balloons']
@@ -305,7 +315,7 @@ class LPCmsg(TMmsg):
 
         csv_writer.writerow(self.HKData + self.HGBins + self.LGBins)
 
-        return self.csv_io.getvalue().split('\r\n')
+        return csv_io.getvalue().split('\r\n')
 
     def printCsv(self):
         '''
@@ -342,6 +352,7 @@ def argParse():
     parser.add_argument('-l', '--lpc', action='store_true', help='LPC file')
     parser.add_argument('-r', '--rs41', action='store_true', help='RS41 file')           
     parser.add_argument('-c', '--csv', help='Save CSV to a file')
+    parser.add_argument('-t', '--tm', action='store_true', help='Print the TM header')
     parser.add_argument('-q', '--quiet',  action='store_true', help='Turn off printing')  # on/off flag
 
     args=parser.parse_args()
@@ -381,6 +392,9 @@ if __name__ == "__main__":
         msg = LPCmsg(args.filename)
     if args.msg_type == 'rs41':
         msg = RS41msg(args.filename)
+
+    if args.tm:
+        print(msg.tm())
 
     if not args.quiet:
         msg.printCsv()
