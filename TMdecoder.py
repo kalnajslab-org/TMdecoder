@@ -4,6 +4,7 @@ import csv
 import io
 import sys
 import argparse
+import numpy as np
 from datetime import datetime
 from datetime import timezone
 
