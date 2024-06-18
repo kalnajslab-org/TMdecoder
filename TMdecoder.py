@@ -249,35 +249,40 @@ class LPCmsg(TMmsg):
         self.unpackBinary()
 
     def unpackBinary(self):
-        for y in range(int(len(self.bindata)/96 -1)):
-            self.HGBins = []
-            self.LGBins = []
-            self.HKRaw = []
-            self.HKData = [0]*16
+        records = int(len(self.bindata)/96) -1
+        self.HGBins = np.zeros(shape=(16,records))
+        self.LGBins = np.zeros(shape=(16,records))
+        self.HKData = np.zeros(shape=(16,records))
+        for y in range(records):
+          
+            self.HKRaw = [0]
+           
             indx = 36 + (y+1)*96
         
             for x in range(16):
-                self.HGBins.append(struct.unpack_from('>H',self.bindata,indx + x*2)[0])    
-                self.LGBins.append(struct.unpack_from('>H',self.bindata,indx + x*2 + 32)[0])
+                self.HGBins[x,y] = struct.unpack_from('>H',self.bindata,indx + x*2)[0]    
+                self.LGBins[x,y] = struct.unpack_from('>H',self.bindata,indx + x*2 + 32)[0]
                 self.HKRaw.append(struct.unpack_from('>H',self.bindata,indx + x*2 + 64)[0])
+            
 
-            self.HKData[0] = self.HKRaw[0] + self.time_from_epoch #elapsed time since the start of the measurement in seconds
-            self.HKData[1] = self.HKRaw[1]  # Pump1 Current in mA
-            self.HKData[2] = self.HKRaw[2]  # Pump2 Current in mA
-            self.HKData[3] = self.HKRaw[3]  # Detector Current in mA
-            self.HKData[4] = self.HKRaw[4] / 1000.0 # Detector voltage in V
-            self.HKData[5] = self.HKRaw[5] / 1000.0 # PHA Voltage in volts
-            self.HKData[6] = self.HKRaw[6] / 1000.0 #Input V in volts
-            self.HKData[7] = self.HKRaw[7] / 1000.0 # Flow in SLPM
-            self.HKData[8] = self.HKRaw[8] / 1000.0 # Teensy voltage in V
-            self.HKData[9] = self.HKRaw[9] # Pump1 PWM drive signal (0 - 1023)
-            self.HKData[10] = self.HKRaw[10] # Pump2 PWM drive signal (0 - 1023)
-            self.HKData[11] = self.HKRaw[11] / 100.0 - 273.15 # Pump1 T in C
-            self.HKData[12] = self.HKRaw[12] / 100.0 - 273.15 # Pump2 T in C
-            self.HKData[13] = self.HKRaw[13] / 100.0 - 273.15 # Laser T in C
-            self.HKData[14] = self.HKRaw[14] / 100.0 - 273.15 # Board T in C
-            self.HKData[15] = self.HKRaw[15] / 100.0 - 273.15 # Inlet T in C
-
+            #modified to agree with the current LPC HK scheme - this will need to be updated for mission 
+            self.HKData[0,y] = self.HKRaw[0] + self.time_from_epoch #elapsed time since the start of the measurement in seconds
+            self.HKData[1,y] = self.HKRaw[1]  # Pump1 Current in mA
+            self.HKData[2,y] = self.HKRaw[2]  # Pump2 Current in mA
+            self.HKData[3,y] = self.HKRaw[3]  # Detector Current in mA
+            
+            self.HKData[4,y] = self.HKRaw[4] / 1000.0 # Detector voltage in V
+            self.HKData[5,y] = self.HKRaw[5] / 1000.0 # PHA Voltage in volts
+            self.HKData[6,y] = self.HKRaw[6] / 1000.0 # Tennsy V in volts
+            self.HKData[7,y] = self.HKRaw[7] / 1000.0 # VBattery V 
+            self.HKData[8,y] = self.HKRaw[8] / 1000.0 # Flow in LPM
+            self.HKData[9,y] = self.HKRaw[9] # Pump1 PWM drive signal (0 - 1023)
+            self.HKData[10,y] = self.HKRaw[10] # Pump2 PWM drive signal (0 - 1023)
+            self.HKData[11,y] = self.HKRaw[11] / 100.0 - 273.15 # Pump1 T in C
+            self.HKData[12,y] = self.HKRaw[12] / 100.0 - 273.15 # Pump2 T in C
+            self.HKData[13,y] = self.HKRaw[13] / 100.0 - 273.15 # Laser T in C
+            self.HKData[14,y] = self.HKRaw[14] / 100.0 - 273.15 # Board T in C
+            self.HKData[15,y] = self.HKRaw[15] / 100.0 - 273.15 # Inlet T in C
     def csvText(self)->list:
         '''
         Generate CSV text lines from the records.
@@ -313,7 +318,8 @@ class LPCmsg(TMmsg):
         header4 = ['[Unix Time]', '[mA]','[mA]','[mA]','[V]','[V]','[V]', '[SLPM]', '[V]','[#]','[#]', '[C]', '[C]','[C]', '[C]', '[C]'] + ['[diam >nm]']*len(bin_header)
         csv_writer.writerow(header4)
 
-        csv_writer.writerow(self.HKData + self.HGBins + self.LGBins)
+        for row in range(len(self.HKData[0,:])):
+            csv_writer.writerow(self.HKData[:,row].tolist() + self.HGBins[:,row].tolist() +self.LGBins[:,row].tolist())
 
         return csv_io.getvalue().split('\r\n')
 
