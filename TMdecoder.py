@@ -394,9 +394,8 @@ def determine_msg_type(filename:str)->str:
 
     msg = TMmsg(filename)
     tm = msg.parse_TM_xml()
-    if 'StateMess2' in tm['TM']:
-        if tm['TM']['StateMess2'] == 'RS41':
-            msg_type = 'rs41'
+    if 'StateMess2' in tm['TM'] and tm['TM']['StateMess2'] == 'RS41':
+        msg_type = 'rs41'
 
     return msg_type
 
