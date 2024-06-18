@@ -357,7 +357,8 @@ def argParse():
                         description='Decode a LASP StratoCore TM message and produce CSV',
                         epilog='''
                         If -l or -r are not specified, try to automatically determine the msg type.
-                        Only one of -c or -b is allowed.'
+                        Only one of -c or -b is allowed. In batch mode, the current directory
+                        is searched for the files.'
                         ''')
     parser.add_argument('filename', help='TM message file, or file extension (for batch processing)')
     parser.add_argument('-l', '--lpc', action='store_true', help='LPC file')
