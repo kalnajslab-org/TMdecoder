@@ -5,6 +5,7 @@ import io
 import sys
 import argparse
 import numpy as np
+import glob as glob
 from datetime import datetime
 from datetime import timezone
 
@@ -354,11 +355,15 @@ def argParse():
     parser = argparse.ArgumentParser(
                         prog='TMdecoder',
                         description='Decode a LASP StratoCore TM message and produce CSV',
-                        epilog='If -l or -r are not specified, try to automatically determine the msg type')
-    parser.add_argument('filename', help='TM message file')
+                        epilog='''
+                        If -l or -r are not specified, try to automatically determine the msg type.
+                        Only one of -c or -b is allowed.'
+                        ''')
+    parser.add_argument('filename', help='TM message file, or file extension (for batch processing)')
     parser.add_argument('-l', '--lpc', action='store_true', help='LPC file')
     parser.add_argument('-r', '--rs41', action='store_true', help='RS41 file')           
     parser.add_argument('-c', '--csv', help='Save CSV to a file')
+    parser.add_argument('-b', '--batch', action='store_true', help='Batch process, creating .csv files')
     parser.add_argument('-t', '--tm', action='store_true', help='Print the TM header')
     parser.add_argument('-q', '--quiet',  action='store_true', help='Turn off printing')  # on/off flag
 
@@ -369,11 +374,18 @@ def argParse():
         parser.print_usage()
         sys.exit(1)
 
+    if (args.csv != None) & args.batch:
+        print('Only one of -c or -b can be specified')
+        parser.print_usage()
+        sys.exit(1)
+
     args.msg_type = None
     if args.lpc:
         args.msg_type = 'lpc'
     if args.rs41:
         args.msg_type = 'rs41'
+
+    args.filename_or_ext = args.filename
 
     return args
 
@@ -388,24 +400,38 @@ def determine_msg_type(filename:str)->str:
 
     return msg_type
 
+def get_files(ext:str):
+    tm_files = glob.glob(f'*{ext}')
+    csv_files = [f.replace(ext, '.csv') for f in tm_files]
+    return tm_files, csv_files
+
 if __name__ == "__main__":
 
     args = argParse()
 
-    if not args.msg_type:
-        args.msg_type = determine_msg_type(args.filename)
+    if args.batch:
+        tm_files, csv_files = get_files(args.filename_or_ext)
+    else:
+        tm_files = [args.filename_or_ext]
+        csv_files = [args.csv]
 
-    if args.msg_type == 'lpc':
-        msg = LPCmsg(args.filename)
-    if args.msg_type == 'rs41':
-        msg = RS41msg(args.filename)
+    for tm_file, csv_file in zip(tm_files, csv_files):
 
-    if args.tm:
-        print(msg.tm())
+        if args.msg_type:
+            msg_type = args.msg_type
+        else:
+            msg_type = determine_msg_type(tm_file)
 
-    if not args.quiet:
-        msg.printCsv()
+        if msg_type == 'lpc':
+            msg = LPCmsg(tm_file)
+        if msg_type == 'rs41':
+            msg = RS41msg(tm_file)
 
-    if args.csv:
-        msg.saveCsv(args.csv)
+        if args.tm:
+            print(msg.tm())
 
+        if not args.quiet:
+            msg.printCsv()
+
+        if csv_file:
+            msg.saveCsv(csv_file)
