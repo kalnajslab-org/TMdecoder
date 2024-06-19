@@ -257,7 +257,7 @@ class LPCmsg(TMmsg):
         self.HKData = np.zeros(shape=(16,records))
         for y in range(records):
           
-            self.HKRaw = [0]
+            self.HKRaw = []
            
             indx = 36 + (y+1)*96
         
