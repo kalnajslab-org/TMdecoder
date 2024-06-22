@@ -150,11 +150,11 @@ class RS41msg(TMmsg):
                    'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
         csv_writer.writerow(csv_header)
         
-        csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,pres_mb,module_error'.split(',')
+        csv_header = 'valid,secs_since_start,air_temp_degC,humdity_percent,pres_mb,module_error'.split(',')
         csv_writer.writerow(csv_header)
 
         for r in self.records:
-            csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'], r['pres_mb'], r['module_error']]
+            csv_line = [r['valid'], r['secs'], r['air_temp_degC'], r['humdity_percent'], r['pres_mb'], r['module_error']]
             csv_writer.writerow(csv_line)
 
         return csv_io.getvalue().split('\r\n')
@@ -191,7 +191,7 @@ class RS41msg(TMmsg):
         '''
         r = {}
         r['valid'] = struct.unpack_from('B', record, 0)[0]
-        r['frame_count'] = struct.unpack_from('>l', record, 1)[0]
+        r['secs'] = struct.unpack_from('>l', record, 1)[0]
         r['air_temp_degC'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
         r['humdity_percent'] = struct.unpack_from('>H', record, 7)[0]/100.0
         r['pres_mb'] = struct.unpack_from('>H', record, 9)[0]/50.0
