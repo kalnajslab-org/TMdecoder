@@ -131,6 +131,20 @@ class RS41msg(TMmsg):
             None
         '''
         super().__init__(msg_filename)
+
+        self.lat = ''
+        self.lon= ''
+        self.alt = ''
+
+        tm_xml = self.parse_TM_xml()
+
+        if 'StateMess3' in tm_xml['TM']:
+            tokens = tm_xml['TM']['StateMess3'].split(',')
+            if len(tokens) == 3:
+                self.lat = tokens[0]
+                self.lon = tokens[1]
+                self.alt = tokens[2]
+
         self.records = self.allRS41samples()
 
     def csvText(self)->list:
@@ -147,9 +161,13 @@ class RS41msg(TMmsg):
         csv_io = io.StringIO()
         csv_writer = csv.writer(csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        csv_header = ['Instrument:', 'RS41', 'Measurement End Time:', self.formatted_time, 
+        csv_header1 = ['Instrument:', 'RS41', 'Measurement End Time:', self.formatted_time, 
                    'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
-        csv_writer.writerow(csv_header)
+        csv_writer.writerow(csv_header1)
+
+        header2 = ['GPS Position at start of Measurement ', 'Latitude: ', self.lat, 'Longitude: ', self.lon, 
+                   'Altitude [m]:',self.alt]
+        csv_writer.writerow(header2)
         
         csv_header = 'valid,secs_since_start,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,module_error'.split(',')
         csv_writer.writerow(csv_header)
