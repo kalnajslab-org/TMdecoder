@@ -116,6 +116,7 @@ class RS41msg(TMmsg):
     #    uint32_t frame;
     #    uint16_t tdry; (tdry+100)*100
     #    uint16_t humidity; (humdity*100)
+    #    uint16_t temp_humiditysensor; (tsensor + 100)*100    
     #    uint16_t pres; (pres*100)
     #    uint16_t error;
     #};
@@ -150,11 +151,11 @@ class RS41msg(TMmsg):
                    'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
         csv_writer.writerow(csv_header)
         
-        csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,pres_mb,module_error'.split(',')
+        csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,module_error'.split(',')
         csv_writer.writerow(csv_header)
 
         for r in self.records:
-            csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'], r['pres_mb'], r['module_error']]
+            csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'],r['humidity_sensor_temp_degC'], r['pres_mb'], r['module_error']]
             csv_writer.writerow(csv_line)
 
         return csv_io.getvalue().split('\r\n')
@@ -194,8 +195,9 @@ class RS41msg(TMmsg):
         r['frame_count'] = struct.unpack_from('>l', record, 1)[0]
         r['air_temp_degC'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
         r['humdity_percent'] = struct.unpack_from('>H', record, 7)[0]/100.0
-        r['pres_mb'] = struct.unpack_from('>H', record, 9)[0]/50.0
-        r['module_error'] = struct.unpack_from('>H', record, 11)[0]
+        r['humidity_sensor_temp_degC'] = struct.unpack_from('>H', record, 9)[0]/100.0-100.0
+        r['pres_mb'] = struct.unpack_from('>H', record, 11)[0]/50.0
+        r['module_error'] = struct.unpack_from('>H', record, 13)[0]
         #print(f"{valid}, {frame}, {tdry:0.2f}, {humidity:0.2f}, {pres:0.2f}, 0x{error:04x}")
         return r
 
@@ -206,7 +208,7 @@ class RS41msg(TMmsg):
         Returns:
             list: List of dictionaries containing decoded real-world values for each data sample.
         '''
-        record_len = 1 + 4 + 2 + 2 + 2 + 2
+        record_len = 1 + 4 + 2 + 2 + 2 + 2 + 2
         records = []
         for i in range(6, len(self.bindata)-6, record_len):
             record = self.bindata[i:i+record_len]
@@ -242,8 +244,8 @@ class LPCmsg(TMmsg):
         if 'Inst' in tm_xml['TM']:
             self.inst = tm_xml['TM']['Inst']
 
-        if 'StateMess1' in tm_xml['TM']:
-            tokens = tm_xml['TM']['StateMess1'].split(',')
+        if 'StateMess2' in tm_xml['TM']:
+            tokens = tm_xml['TM']['StateMess2'].split(',')
             if len(tokens) == 3:
                 self.lat = tokens[0]
                 self.lon = tokens[1]
@@ -251,7 +253,7 @@ class LPCmsg(TMmsg):
         self.unpackBinary()
 
     def unpackBinary(self):
-        records = int(len(self.bindata)/96) -1
+        records = int(len(self.bindata)/96) -2
         self.HGBins = np.zeros(shape=(16,records))
         self.LGBins = np.zeros(shape=(16,records))
         self.HKData = np.zeros(shape=(16,records))
@@ -313,11 +315,11 @@ class LPCmsg(TMmsg):
                    'Altitude [m]:',self.alt]
         csv_writer.writerow(header2)
 
-        header3 = ['Time', 'Pump1_I','Pump2_I','PHA_I', 'PHA_12V','PHA_3V3','Input_V', 'Flow', 'CPU_V', 
+        header3 = ['Time', 'Pump1_I','Pump2_I','PHA_I', 'PHA_12V','PHA_3V3','CPU_V', 'Input_V', 'Flow', 
                    'Pump1_PWM', 'Pump2_PWM','Pump1_T', 'Pump2_T', 'Laser_T', 'PCB_T', 'Inlet_T'] + bin_header
         csv_writer.writerow(header3)
 
-        header4 = ['[Unix Time]', '[mA]','[mA]','[mA]','[V]','[V]','[V]', '[SLPM]', '[V]','[#]','[#]', '[C]', '[C]','[C]', '[C]', '[C]'] + ['[diam >nm]']*len(bin_header)
+        header4 = ['[Unix Time]', '[mA]','[mA]','[mA]','[V]','[V]','[V]', '[V]', '[SLPM]','[#]','[#]', '[C]', '[C]','[C]', '[C]', '[C]'] + ['[diam >nm]']*len(bin_header)
         csv_writer.writerow(header4)
 
         for row in range(len(self.HKData[0,:])):
