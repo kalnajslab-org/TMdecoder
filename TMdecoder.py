@@ -8,7 +8,48 @@ import numpy as np
 import glob as glob
 from datetime import datetime
 from datetime import timezone
+from sys import exit
 
+def RS41_RH_wvmr(TC_ambient,hPa_ambient,rh_reported,TC_humSensor):
+    '''
+    Parameters: ambient:tempC,prshPa, RH_reported, tempC_of humSensor
+    Returns: ambient RH and ambient water vapor mixing ratio ppmv
+    '''
+    eswhPa_humSensor_temp=Hardy_1998(TC_humSensor)
+    eswhPa_ambient_temp=Hardy_1998(TC_ambient)
+    ew_hPa=eswhPa_humSensor_temp*rh_reported/100.
+    RH_ambient=ew_hPa/eswhPa_ambient_temp*100
+    WV_ppmv=WV_mixing_ratio(ew_hPa,hPa_ambient)
+    return [RH_ambient,WV_ppmv]
+
+def WV_mixing_ratio(ew_hPa,prshPa):
+    '''
+    Parameters: vapor pressure of water, ambient pressure 
+    calculates water vapor mixing ratio (ppm) in both mass (ppmm) and volume(ppmv)
+    Returns: WV_ppmv 
+    '''
+    molecw_air=28.97
+    molecw_h2o=18.0
+    epsilon=molecw_h2o/molecw_air
+    WV_ppmm=epsilon*ew_hPa/(prshPa-ew_hPa)*1e6
+    WV_ppmv=ew_hPa/(prshPa-ew_hPa)*1e6
+    return WV_ppmv
+
+def Hardy_1998(TC):
+   '''
+   Returns saturation vapor pressure in hPa esw_hPa at TC from Hardy (1998)
+   Parameters Temp C
+   '''
+   HC=[-2.8365744e3,-6.028076559e3,1.954263612e1,-2.737830188e-2,1.6261698e-5,7.0229056e-10,-1.8680009e-13]
+   TK=TC+273.15
+   i=0
+   lesw=0
+   for c in HC:
+       lesw=lesw+c*TK**(i-2)
+       i=i+1
+   lesw=lesw+2.7150305*np.log(TK)
+   esw_hPa=np.exp(lesw)/100
+   return esw_hPa
 
 class TMmsg:
     def __init__(self, msg_filename:str):
@@ -116,7 +157,6 @@ class RS41msg(TMmsg):
     #    uint32_t frame;
     #    uint16_t tdry; (tdry+100)*100
     #    uint16_t humidity; (humdity*100)
-    #    uint16_t temp_humiditysensor; (tsensor + 100)*100    
     #    uint16_t pres; (pres*100)
     #    uint16_t error;
     #};
@@ -131,20 +171,6 @@ class RS41msg(TMmsg):
             None
         '''
         super().__init__(msg_filename)
-
-        self.lat = ''
-        self.lon= ''
-        self.alt = ''
-
-        tm_xml = self.parse_TM_xml()
-
-        if 'StateMess3' in tm_xml['TM']:
-            tokens = tm_xml['TM']['StateMess3'].split(',')
-            if len(tokens) == 3:
-                self.lat = tokens[0]
-                self.lon = tokens[1]
-                self.alt = tokens[2]
-
         self.records = self.allRS41samples()
 
     def csvText(self)->list:
@@ -161,19 +187,18 @@ class RS41msg(TMmsg):
         csv_io = io.StringIO()
         csv_writer = csv.writer(csv_io, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        csv_header1 = ['Instrument:', 'RS41', 'Measurement End Time:', self.formatted_time, 
+        csv_header = ['Instrument:', 'RS41', 'Measurement End Time:', self.formatted_time, 
                    'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
-        csv_writer.writerow(csv_header1)
-
-        header2 = ['GPS Position at start of Measurement ', 'Latitude: ', self.lat, 'Longitude: ', self.lon, 
-                   'Altitude [m]:',self.alt]
-        csv_writer.writerow(header2)
+        csv_writer.writerow(csv_header)
         
-        csv_header = 'valid,secs_since_start,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,module_error'.split(',')
+        csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,\
+module_error,RS41 RH percent,WV mixing ratio ppmv'.split(',')
         csv_writer.writerow(csv_header)
 
         for r in self.records:
-            csv_line = [r['valid'], r['secs'], r['air_temp_degC'], r['humdity_percent'],r['humidity_sensor_temp_degC'], r['pres_mb'], r['module_error']]
+            csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'],
+                        r['humidity_sensor_temp_degC'], r['pres_mb'], r['module_error'],
+                        r['RS41 RH percent'],r['WV mixing ratio ppmv']]
             csv_writer.writerow(csv_line)
 
         return csv_io.getvalue().split('\r\n')
@@ -210,15 +235,16 @@ class RS41msg(TMmsg):
         '''
         r = {}
         r['valid'] = struct.unpack_from('B', record, 0)[0]
-        r['secs'] = struct.unpack_from('>l', record, 1)[0]
+        r['frame_count'] = struct.unpack_from('>l', record, 1)[0]
         r['air_temp_degC'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
         r['humdity_percent'] = struct.unpack_from('>H', record, 7)[0]/100.0
         r['humidity_sensor_temp_degC'] = struct.unpack_from('>H', record, 9)[0]/100.0-100.0
         r['pres_mb'] = struct.unpack_from('>H', record, 11)[0]/50.0
         r['module_error'] = struct.unpack_from('>H', record, 13)[0]
-        #print(f"{valid}, {frame}, {tdry:0.2f}, {humidity:0.2f}, {pres:0.2f}, 0x{error:04x}")
+        r['RS41 RH percent'],r['WV mixing ratio ppmv']=RS41_RH_wvmr(r['air_temp_degC'],r['pres_mb'],r['humdity_percent'],r['humidity_sensor_temp_degC'])
+        #print(r)
         return r
-
+    
     def allRS41samples(self)->list:
         '''
         Go through all data samples and convert them to real-world values.
@@ -231,6 +257,7 @@ class RS41msg(TMmsg):
         for i in range(6, len(self.bindata)-6, record_len):
             record = self.bindata[i:i+record_len]
             records.append(self.decodeRS41sample(record))
+        #exit()
         return records
 
 class LPCmsg(TMmsg):
@@ -262,8 +289,8 @@ class LPCmsg(TMmsg):
         if 'Inst' in tm_xml['TM']:
             self.inst = tm_xml['TM']['Inst']
 
-        if 'StateMess2' in tm_xml['TM']:
-            tokens = tm_xml['TM']['StateMess2'].split(',')
+        if 'StateMess1' in tm_xml['TM']:
+            tokens = tm_xml['TM']['StateMess1'].split(',')
             if len(tokens) == 3:
                 self.lat = tokens[0]
                 self.lon = tokens[1]
