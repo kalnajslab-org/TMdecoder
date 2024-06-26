@@ -7,7 +7,7 @@ The output is printed in CSV format. A CSV header is included. An option
 for saving to a CSV file is provided.
 
 The program attempts to determine which instrument the file contins 
-data for LPC or RS41. If it cannot determine this automatically,
+data for: LPC or RS41. If it cannot determine this automatically,
 use the `-l` or `-r` switches.
 
 There are two sample TMs included here which can be used to try out the application:
@@ -28,7 +28,7 @@ od -a -t x1 -A d  TM.LPC.ready_tm > TM.LPC.dump
 # Installation
 
 ```sh
-pip3 install xmltodict
+pip3 install xmltodict numpy
 git clone https://github.com/MisterMartin/TMdecoder.git
 ```
 
@@ -42,7 +42,7 @@ python3 TMdecoder.py -o lpc.csv TM.LPC.ready_tm
 
 ## Usage
 
-```python3 TMdecoder.h -h``` displays help:
+```python3 TMdecoder.py -h``` displays help:
 
 ```text
 usage: TMdecoder [-h] [-l] [-r] [-c CSV] [-b] [-t] [-q] filename
