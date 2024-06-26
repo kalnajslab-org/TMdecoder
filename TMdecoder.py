@@ -39,6 +39,7 @@ def Hardy_1998(TC):
    '''
    Returns saturation vapor pressure in hPa esw_hPa at TC from Hardy (1998)
    Parameters Temp C
+   This is the formulation used by Vaisala the maker of the RS41
    '''
    HC=[-2.8365744e3,-6.028076559e3,1.954263612e1,-2.737830188e-2,1.6261698e-5,7.0229056e-10,-1.8680009e-13]
    TK=TC+273.15
@@ -72,8 +73,7 @@ class TMmsg:
             data = binary_file.read()
 
         self.data = data
-        self.bindata = self.binaryData()
-        
+        self.bindata = self.binaryData()        
         self.time_from_epoch = self.timeStamp()
         date_time = datetime.fromtimestamp(int(self.time_from_epoch),tz=timezone.utc)
         self.formatted_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
@@ -191,14 +191,14 @@ class RS41msg(TMmsg):
                    'NCAR RS41 sensor on Strateole 2 Super Pressure Balloons']
         csv_writer.writerow(csv_header)
         
-        csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,\
+        csv_header = 'valid,unix_time,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,\
             module_error,rs41_rh_percent,wv_mixing_ratio_ppmv'.replace(' ','').split(',')
         csv_writer.writerow(csv_header)
 
         for r in self.records:
-            csv_line = [r['valid'], r['frame_count'], r['air_temp_degC'], r['humdity_percent'],
+            csv_line = [r['valid'], r['unix_time'], r['air_temp_degC'], r['humdity_percent'],
                         r['humidity_sensor_temp_degC'], r['pres_mb'], r['module_error'],
-                        r['RS41 RH percent'],r['WV mixing ratio ppmv']]
+                        r['rs41_rh_percent'],r['wv_mixing_ratio_ppmv']]
             csv_writer.writerow(csv_line)
 
         return csv_io.getvalue().split('\r\n')
@@ -235,13 +235,14 @@ class RS41msg(TMmsg):
         '''
         r = {}
         r['valid'] = struct.unpack_from('B', record, 0)[0]
-        r['frame_count'] = struct.unpack_from('>l', record, 1)[0]
+        r['unix_time'] = struct.unpack_from('>l', record, 1)[0]+self.time_from_epoch
+        # print('decodeRS41',self.time_from_epoch,r['unix_time'])
         r['air_temp_degC'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
         r['humdity_percent'] = struct.unpack_from('>H', record, 7)[0]/100.0
         r['humidity_sensor_temp_degC'] = struct.unpack_from('>H', record, 9)[0]/100.0-100.0
         r['pres_mb'] = struct.unpack_from('>H', record, 11)[0]/50.0
         r['module_error'] = struct.unpack_from('>H', record, 13)[0]
-        r['RS41 RH percent'],r['WV mixing ratio ppmv']=RS41_RH_wvmr(r['air_temp_degC'],r['pres_mb'],r['humdity_percent'],r['humidity_sensor_temp_degC'])
+        r['rs41_rh_percent'],r['wv_mixing_ratio_ppmv']=RS41_RH_wvmr(r['air_temp_degC'],r['pres_mb'],r['humdity_percent'],r['humidity_sensor_temp_degC'])
         #print(r)
         return r
     
@@ -332,7 +333,6 @@ class LPCmsg(TMmsg):
             self.HKData[13,y] = self.HKRaw[13] / 100.0 - 273.15 # Laser T in C
             self.HKData[14,y] = self.HKRaw[14] / 100.0 - 273.15 # Board T in C
             self.HKData[15,y] = self.HKRaw[15] / 100.0 - 273.15 # Inlet T in C
-
     def csvText(self)->list:
         '''
         Generate CSV text lines from the records.
@@ -365,7 +365,7 @@ class LPCmsg(TMmsg):
                    'Pump1_PWM', 'Pump2_PWM','Pump1_T', 'Pump2_T', 'Laser_T', 'PCB_T', 'Inlet_T'] + bin_header
         csv_writer.writerow(header3)
 
-        header4 = ['[Unix Time]', '[mA]','[mA]','[mA]','[V]','[V]','[V]', '[V]', '[SLPM]','[#]','[#]', '[C]', '[C]','[C]', '[C]', '[C]'] + ['[diam >nm]']*len(bin_header)
+        header4 = ['[unix_time]', '[mA]','[mA]','[mA]','[V]','[V]','[V]', '[V]', '[SLPM]','[#]','[#]', '[C]', '[C]','[C]', '[C]', '[C]'] + ['[diam >nm]']*len(bin_header)
         csv_writer.writerow(header4)
 
         for row in range(len(self.HKData[0,:])):
