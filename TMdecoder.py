@@ -295,8 +295,8 @@ class LPCmsg(TMmsg):
         if 'Inst' in tm_xml['TM']:
             self.inst = tm_xml['TM']['Inst']
 
-        if 'StateMess1' in tm_xml['TM']:
-            tokens = tm_xml['TM']['StateMess1'].split(',')
+        if 'StateMess3' in tm_xml['TM']:
+            tokens = tm_xml['TM']['StateMess3'].split(',')
             if len(tokens) == 3:
                 self.lat = tokens[0]
                 self.lon = tokens[1]
