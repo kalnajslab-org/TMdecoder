@@ -192,7 +192,7 @@ class RS41msg(TMmsg):
         csv_writer.writerow(csv_header)
         
         csv_header = 'valid,frame_count,air_temp_degC,humdity_percent,humidity_sensor_temp,pres_mb,\
-module_error,RS41 RH percent,WV mixing ratio ppmv'.split(',')
+            module_error,rs41_rh_percent,wv_mixing_ratio_ppmv'.replace(' ','').split(',')
         csv_writer.writerow(csv_header)
 
         for r in self.records:
@@ -332,6 +332,7 @@ class LPCmsg(TMmsg):
             self.HKData[13,y] = self.HKRaw[13] / 100.0 - 273.15 # Laser T in C
             self.HKData[14,y] = self.HKRaw[14] / 100.0 - 273.15 # Board T in C
             self.HKData[15,y] = self.HKRaw[15] / 100.0 - 273.15 # Inlet T in C
+
     def csvText(self)->list:
         '''
         Generate CSV text lines from the records.
