@@ -74,8 +74,8 @@ class TMmsg:
 
         self.data = data
         self.bindata = self.binaryData()        
-        self.time_from_epoch = self.timeStamp()
-        date_time = datetime.fromtimestamp(int(self.time_from_epoch),tz=timezone.utc)
+        self.unix_end_time = self.timeStamp()
+        date_time = datetime.fromtimestamp(int(self.unix_end_time),tz=timezone.utc)
         self.formatted_time = date_time.strftime("%m/%d/%Y, %H:%M:%S")
 
 
@@ -235,8 +235,8 @@ class RS41msg(TMmsg):
         '''
         r = {}
         r['valid'] = struct.unpack_from('B', record, 0)[0]
-        r['unix_time'] = struct.unpack_from('>l', record, 1)[0]+self.time_from_epoch
-        # print('decodeRS41',self.time_from_epoch,r['unix_time'])
+        r['secs_from_start'] = struct.unpack_from('>l', record, 1)[0]
+        # print('decodeRS41',self.unix_end_time,r['unix_time'])
         r['air_temp_degC'] = struct.unpack_from('>H', record, 5)[0]/100.0-100.0
         r['humdity_percent'] = struct.unpack_from('>H', record, 7)[0]/100.0
         r['humidity_sensor_temp_degC'] = struct.unpack_from('>H', record, 9)[0]/100.0-100.0
@@ -258,7 +258,12 @@ class RS41msg(TMmsg):
         for i in range(6, len(self.bindata)-6, record_len):
             record = self.bindata[i:i+record_len]
             records.append(self.decodeRS41sample(record))
-        #exit()
+
+        # Compute the unix time for each sample
+        start_time = self.unix_end_time - (records[-1]['secs_from_start'] - records[0]['secs_from_start'] + 1)
+        for i in range(len(records)):
+            records[i]['unix_time'] =  records[i]['secs_from_start'] + start_time
+
         return records
 
 class LPCmsg(TMmsg):
@@ -316,7 +321,7 @@ class LPCmsg(TMmsg):
             
 
             #modified to agree with the current LPC HK scheme - this will need to be updated for mission 
-            self.HKData[0,y] = self.HKRaw[0] + self.time_from_epoch #elapsed time since the start of the measurement in seconds
+            self.HKData[0,y] = self.HKRaw[0] + self.unix_end_time #elapsed time since the start of the measurement in seconds
             self.HKData[1,y] = self.HKRaw[1]  # Pump1 Current in mA
             self.HKData[2,y] = self.HKRaw[2]  # Pump2 Current in mA
             self.HKData[3,y] = self.HKRaw[3]  # Detector Current in mA
