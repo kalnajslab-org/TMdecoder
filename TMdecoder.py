@@ -470,21 +470,24 @@ if __name__ == "__main__":
 
     for tm_file, csv_file in zip(tm_files, csv_files):
 
-        if args.msg_type:
-            msg_type = args.msg_type
-        else:
-            msg_type = determine_msg_type(tm_file)
+        try:
+            if args.msg_type:
+                msg_type = args.msg_type
+            else:
+                msg_type = determine_msg_type(tm_file)
 
-        if msg_type == 'lpc':
-            msg = LPCmsg(tm_file)
-        if msg_type == 'rs41':
-            msg = RS41msg(tm_file)
+            if msg_type == 'lpc':
+                msg = LPCmsg(tm_file)
+            if msg_type == 'rs41':
+                msg = RS41msg(tm_file)
 
-        if args.tm:
-            print(msg.tm())
+            if args.tm:
+                print(msg.tm())
 
-        if not args.quiet:
-            msg.printCsv()
+            if not args.quiet:
+                msg.printCsv()
 
-        if csv_file:
-            msg.saveCsv(csv_file)
+            if csv_file:
+                msg.saveCsv(csv_file)
+        except struct.error:
+            print(f'*** Error decoding binary data in {tm_file}, file was not processed')
