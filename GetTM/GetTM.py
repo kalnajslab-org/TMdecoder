@@ -30,6 +30,14 @@ format_string = (
     'u24'  # tsen_pres (24 bits)
 )
 
+variable_names = [
+    'rev', 'heat_on', 'v5', 'v12', 'v56', 'board_t', 'gps_valid', 
+    'gps_lat', 'gps_lon', 'gps_alt', 'gps_sats', 'gps_hdop', 
+    'gps_age_secs', 'rs41_valid', 'rs41_airt', 'rs41_hum', 
+    'rs41_hst', 'rs41_pres', 'rs41_pcb_h', 'tsen_airt', 
+    'tsen_ptemp', 'tsen_pres'
+    ]
+
 if __name__ == "__main__":
     # Open the file
     with open("TM.dat", "rb") as f:
@@ -69,10 +77,11 @@ if __name__ == "__main__":
         rs41_hum = unpacked_data[15]/100.0
         rs41_hst = unpacked_data[16]
         rs41_pres = unpacked_data[17]/100.0
-        rs41_pcb_h = unpacked_data[18]*1.0
+        rs41_pcb_h = bool(unpacked_data[18])
         tsen_airt = unpacked_data[19]
         tsen_ptemp = unpacked_data[20]
         tsen_pres = unpacked_data[21]
+
 
         # Print the scaled data
         print('rev:', rev)
@@ -97,3 +106,7 @@ if __name__ == "__main__":
         print('tsen_airt:', f'0x{tsen_airt:03x}')
         print('tsen_ptemp:', f'0x{tsen_ptemp:06x}')
         print('tsen_pres:', f'0x{tsen_pres:06x}')
+        print()
+
+        var_dict = unpack_dict(format_string, variable_names, data_record)
+        print(var_dict)
