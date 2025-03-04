@@ -8,9 +8,9 @@ of bytes. A format string defines the bit fields.
 
 ***The format string must exactly match the bitfield definitions in ECUReport_t.***
 
-The binary payload of the RATSReport TM currently starts with a few
-metadata fields, and then is followed by a list of `ECUReport` records,
-straight from the ECU's mouth.
+The binary payload of the RATSReport TM currently starts with a
+`StratoRats::RATSReportHeader_t`, and then is followed by a list of
+`ECUReport` records, straight from the ECU's mouth.
 
 # bitstruct
 

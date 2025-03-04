@@ -1,6 +1,10 @@
 #
-#
+# See StratoCore_RATS/src/StratoRats.h for StratoRATS::RATSReportHeader_t,
+# which describes the bit-packed TM header block.
+# See ECUComm/src/ECUComm.h for ECUComm::ECUReport_t, which describes the
+# bit-packed ECU data block.
 # 
+import sys
 from bitstruct import *
 
 # Define the format string for the bitstruct
@@ -61,25 +65,35 @@ variable_names = [
 
 if __name__ == "__main__":
     # Open the file
-    with open("TM.dat", "rb") as f:
+    if len(sys.argv) != 2:
+        print(f'Usage: {sys.argv[0]} <TM file>')
+        sys.exit(1)
+    tm_file = sys.argv[1]
+    with open(tm_file, "rb") as f:
         all_bytes = f.read()
         print('TM size:', len(all_bytes))
-        start = all_bytes.find(b"START")
-        print('TM binary start:', start)
-        data_bytes = all_bytes[start+5:]
-        f='>u16u16'
-        n_recs, rec_size = unpack(f, data_bytes)
-        print('TM n_recs:', n_recs)
-        print('TM rec_size:', rec_size)
+        start = all_bytes.find(b"START")+5
+        print(f'TM binary start:0x{start:x}')
+        f = '>u8'
+        n_header_bytes, = unpack(f, all_bytes[start:])
+        print('n_header_bytes:', n_header_bytes)
+        f='>u16u16u1u13'
+        num_ecu_records, ecu_record_size, ecu_pwr_on, v56 = unpack(f, all_bytes[start+1:])
+        print('num_ecu_records:', num_ecu_records)
+        print('ecu_record_size:', ecu_record_size)
+        print('ecu_pwr_on:', ecu_pwr_on)
+        print('v56:', v56/100.0)
         print()
         
+        # Space past the header bytes
+        data_bytes = all_bytes[start+n_header_bytes:]
         record_num = 0
-        offset = 4
+        offset = 0
         while offset < len(data_bytes):
-            if offset+rec_size > len(data_bytes):
+            if offset+ecu_record_size > len(data_bytes):
                 # We've reached the terminating bytes at the end of the file
                 break
-            data_record = data_bytes[offset:offset+rec_size]
+            data_record = data_bytes[offset:offset+ecu_record_size]
         
             # Unpack the unscaled parameters for the first record
             vars = unpack_dict(format_string, variable_names, data_record)
@@ -122,5 +136,5 @@ if __name__ == "__main__":
                     print(f'{key}: {value:08d}')
                 else:
                     print(f'{key}: {value}')
-            offset += rec_size
+            offset += ecu_record_size
 
