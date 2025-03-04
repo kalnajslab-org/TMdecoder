@@ -1,5 +1,15 @@
 # GetTM
 
+This is a prototype app for decoding RATSReport TeleMessages. It uses
+the handy python `bitstruct` module.
+
+`bitstruct` lets you extract arbitrary bit fields from a vector
+of bytes. A format string defines the bit fields.
+
+The binary payload of the RATSReport TM currently starts with a few
+metadata fields, and then is followed by a list of `ECUReport` records,
+straight from the ECU's mouth.
+
 # bitstruct
 
 `bitstruct` would not install on my older iMac, failing with:
