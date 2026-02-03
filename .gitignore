@@ -1,7 +1,4 @@
 .DS_Store
 README.pdf
-RatsTM/tmdecoder.egg-info/dependency_links.txt
-RatsTM/tmdecoder.egg-info/PKG-INFO
-RatsTM/tmdecoder.egg-info/requires.txt
-RatsTM/tmdecoder.egg-info/SOURCES.txt
-RatsTM/tmdecoder.egg-info/top_level.txt
+RatsTM/tmdecoder.egg-info/*
+*.pyc
